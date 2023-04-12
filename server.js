@@ -1,6 +1,6 @@
 const jsonServer = require('json-server')
 const clone = require('clone')
-const data = require('./data/db.json')
+const data = require('./db.json')
 
 const isProductionEnv = process.env.NODE_ENV === 'production';
 const server = jsonServer.create()
