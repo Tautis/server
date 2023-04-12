@@ -8,7 +8,7 @@
         },
         {
             "id":5124,
-            "action":"buy",
+            "action":"sell",
             "amount":1.0,
             "status":"created"
         }
