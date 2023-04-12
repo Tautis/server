@@ -1,23 +1,26 @@
 const jsonServer = require('json-server')
 const clone = require('clone')
-const data = require('./db.json')
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
+
+const adapter = new FileSync('./data/db.json')
+const db = low(adapter)
+
+db.defaults({ positions: [] }).write()
 
 const isProductionEnv = process.env.NODE_ENV === 'production';
 const server = jsonServer.create()
 
-// For mocking the POST request, POST request won't make any changes to the DB in production environment
-const router = jsonServer.router(isProductionEnv ? clone(data) : 'db.json', {
-    _isFake: isProductionEnv
+const router = jsonServer.router(db.getState(), {
+  _isFake: isProductionEnv
 })
 const middlewares = jsonServer.defaults()
 
 server.use(middlewares)
 
-
 server.use(router)
 server.listen(process.env.PORT || 8000, () => {
-    console.log('JSON Server is running')
+  console.log('JSON Server is running')
 })
 
-// Export the Server API
 module.exports = server
