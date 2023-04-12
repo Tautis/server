@@ -10,11 +10,11 @@ const router = jsonServer.router(isProductionEnv ? clone(data) : 'db.json', {
     _isFake: isProductionEnv
 })
 
-// Add a PUT endpoint to the router
+// Add a POST endpoint to the router
 router.render = (req, res) => {
-  if (req.method === 'PUT') {
+  if (req.method === 'POST') {
     res.jsonp({
-      message: 'Data updated successfully',
+      message: 'Data added successfully',
     })
   } else {
     res.jsonp(res.locals.data)
@@ -31,19 +31,11 @@ server.use((req, res, next) => {
     next()
 })
 
-// Add the PUT endpoint to the server
-server.put('/resource/:id', (req, res) => {
-  const { id } = req.params;
+// Add the POST endpoint to the server
+server.post('/resource', (req, res) => {
   const body = req.body;
-  const resource = router.db.get('resource').find({ id }).value();
-  if (resource) {
-    router.db.get('resource').find({ id }).assign(body).write();
-    res.status(200).jsonp(router.db.get('resource').find({ id }).value());
-  } else {
-    res.status(404).jsonp({
-      message: `Resource with id ${id} not found`,
-    });
-  }
+  const resource = router.db.get('resource').insert(body).write();
+  res.status(201).jsonp(resource);
 });
 
 server.use(router)
