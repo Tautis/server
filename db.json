@@ -3,12 +3,14 @@
         {
             "id":5235,
             "action":"buy",
-            "amount":1.0
+            "amount":1.0,
+            "status":"created"
         },
         {
             "id":5124,
             "action":"buy",
-            "amount":1.0
+            "amount":1.0,
+            "status":"created"
         }
     ]
 }
