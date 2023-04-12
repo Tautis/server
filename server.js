@@ -13,11 +13,6 @@ const middlewares = jsonServer.defaults()
 
 server.use(middlewares)
 
-server.use((req, res, next) => {
-    if (req.path !== '/')
-        router.db.setState(clone(data))
-    next()
-})
 
 server.use(router)
 server.listen(process.env.PORT || 8000, () => {
